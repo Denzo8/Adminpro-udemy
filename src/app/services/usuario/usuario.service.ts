@@ -96,7 +96,6 @@ if(recordar){
   }));
   }
 
-  
   actualizarUsuario( usuario: Usuario ) {
 
     let url = URL_SERVICIOS + '/usuario/' + usuario._id;
@@ -105,10 +104,11 @@ if(recordar){
     return this.http.put( url, usuario )
                .pipe(map( (resp: any) => {
 
-                // this.usuario = resp.usuario;
-                let usuarioDB: Usuario = resp.usuario;
-
-                this.guardarStorage( usuarioDB._id, this.token, usuarioDB );
+                if(usuario._id===this.usuario._id){
+                  let usuarioDB: Usuario = resp.usuario;
+                  this.guardarStorage( usuarioDB._id, this.token, usuarioDB );
+                }
+                // this.usuario = resp.usuario
                 swal('Usuario actualizado', usuario.nombre, 'success' );
 
                 return true;
@@ -131,6 +131,28 @@ if(recordar){
           }) ;
 
   }
+
+  cargarUsuarios(desde:number=0){
+      let url=URL_SERVICIOS +'/usuario?desde=' + desde;
+      return this.http.get(url);
+  }
+  buscarUsuarios(termino: string){
+    let url=URL_SERVICIOS + '/busqueda/coleccion/usuarios/'+ termino;
+    return this.http.get(url)
+    .pipe(map((res: any)=>res.usuarios));
+  }
+
+  borrarUsuario(id: string){
+    let url=URL_SERVICIOS+"/usuario/" + id;
+    url+="?token="+this.token;
+
+    return  this.http.delete(url)
+    .pipe(map(res=>{
+      swal('Usuario borrado', "El usuario ha sido eliminado correctamente",'success');
+      return true;
+    }));
+  }
+ 
 }
 
 
