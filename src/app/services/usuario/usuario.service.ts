@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from 'src/app/models/usuario.model';
 import { URL_SERVICIOS } from '../../config/config';
-
+  
 import { map } from "rxjs/operators"; 
 
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
